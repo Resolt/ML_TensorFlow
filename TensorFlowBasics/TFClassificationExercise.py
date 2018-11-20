@@ -30,17 +30,23 @@ y = df[tcol]
 X_train,X_test,y_train,y_test = TTS(X,y,test_size=0.3,random_state=64)
 
 # FEATURE COLUMNS
-fcols = [
-	tf.feature_column.numeric_column(c) if type(df[c][0]) != str else
-	tf.feature_column.embedding_column(tf.feature_column.categorical_column_with_hash_bucket(c,len(pd.factorize(X[c])[1])),dimension=len(pd.factorize(X[c])[1]))
-	for c in list(X.columns)
-	]
+fcols = []
+for c in list(X.columns):
+	if type(df[c][0]) != str:
+		feat = tf.feature_column.numeric_column(c)
+	else:
+		n = len(pd.factorize(X[c])[1])
+		cat = tf.feature_column.categorical_column_with_hash_bucket(c,hash_bucket_size=n)
+		feat = tf.feature_column.embedding_column(cat,dimension=n)
+		
+	fcols.append(feat)
+
 
 # INPUT FUNCTION
-input_func_train = tf.estimator.inputs.pandas_input_fn(x=X_train,y=y_train,batch_size=300,num_epochs=100,shuffle=True)
+input_func_train = tf.estimator.inputs.pandas_input_fn(x=X_train,y=y_train,batch_size=1000,num_epochs=100,shuffle=True)
 
 # MODEL
-model = tf.estimator.DNNClassifier(hidden_units=[50,100,100,50],feature_columns=fcols)
+model = tf.estimator.DNNClassifier(hidden_units=[10,10,10,10],feature_columns=fcols)
 
 # TRAINING
 model.train(input_fn=input_func_train,steps=None)
