@@ -22,10 +22,10 @@ fcols = [tf.feature_column.numeric_column(c) for c in list(X.columns)]
 print(fcols)
 
 # INPUT FUNCTION
-input_func_train = tf.estimator.inputs.pandas_input_fn(x=X_train,y=y_train,num_epochs=10000,num_threads=8,batch_size=100,shuffle=True)
+input_func_train = tf.estimator.inputs.pandas_input_fn(x=X_train,y=y_train,num_epochs=10000,num_threads=8,batch_size=1000,shuffle=True)
 
 # DNN REGERSSOR
-model = tf.estimator.DNNRegressor(hidden_units=[5000,5000,5000],feature_columns=fcols)
+model = tf.estimator.DNNRegressor(hidden_units=[4608,900,90,9,9,9,9,9,9],feature_columns=fcols)
 
 # TRAIN
 model.train(input_fn=input_func_train,steps=10000)
@@ -36,8 +36,8 @@ preds = model.predict(input_fn=input_func_pred)
 lpreds = [a['predictions'][0] for a in list(preds)]
 
 # RMSE
-err = y_test-lpreds # ERROR
-s = err**2 # SQUARED
-m = np.mean(s) # MEAN
-r = np.sqrt(m) # ROOT
+err = y_test-lpreds # ERROR - E
+s = err**2 # SQUARED        - S
+m = np.mean(s) # MEAN       - M
+r = np.sqrt(m) # ROOT       - R
 print("RMSE: {}".format(r))
