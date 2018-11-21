@@ -72,7 +72,7 @@ y_pred = dense_layer(dense_1_drop,10)
 cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(labels=y_true,logits=y_pred))
 
 # OPTIMIZER
-optimizer = tf.train.AdamOptimizer(learning_rate=0.001)
+optimizer = tf.train.AdamOptimizer(learning_rate=0.0001)
 train = optimizer.minimize(cross_entropy)
 
 # MATCHES
@@ -81,18 +81,18 @@ acc = tf.reduce_mean(tf.cast(tf.equal(tf.argmax(y_pred,1),tf.argmax(y_true,1)),t
 # INITIALIZER
 init = tf.global_variables_initializer()
 
-steps = 2000
+steps = 5000
 
 # SESSION
 with tf.Session() as sess:
 	sess.run(init)
 
-	for i in range(steps):
-		batch_x, batch_y = mnist.train.next_batch(200)
+	for i in range(1,steps+1):
+		batch_x, batch_y = mnist.train.next_batch(1500)
 		sess.run(train,feed_dict={x:batch_x,y_true:batch_y,hold_prob:0.5})
 
 		if i%100 == 0:
-			accuracy = sess.run(acc,feed={x:mnist.test.images,y_true:mnist.test.labels,hold_prob:1.0})
+			accuracy = sess.run(acc,feed_dict={x:mnist.test.images,y_true:mnist.test.labels,hold_prob:1.0})
 			print("ON STEP: {}".format(i))
 			print("ACCURACY: {}".format(accuracy))
 
