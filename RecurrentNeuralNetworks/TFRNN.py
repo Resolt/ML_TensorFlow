@@ -40,11 +40,11 @@ plotting = False
 
 # CONSTANTS
 num_inputs = 1
-num_neurons = 200
+num_neurons = 100
 num_outputs = 1
 learning_rate = 0.0001
 num_train_iterations = 5000
-batch_size = 20
+batch_size = 10
 num_time_steps = 30
 
 # INSTANTIATE DATA OBJECT
