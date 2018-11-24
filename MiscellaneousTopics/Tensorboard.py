@@ -12,3 +12,5 @@ with tf.Session() as sess:
 	writer = tf.summary.FileWriter(path, sess.graph)
 	print(sess.run(c))
 	writer.close()
+
+# THERE'S ALOT MORE IN THE COURSE - DIDN'T BOTHER TYPING OUT - TONS OF NICE DOCUMENTATION ON TENSORFLOW WEB PAGE
